@@ -4,6 +4,7 @@ import type { ColumnsType } from 'antd/es/table';
 import type { TableRowSelection } from 'antd/es/table/interface';
 import { ICategory } from '../Model/ICategory';
 
+
 interface CategoryProps {
     categories: ICategory[];
     updateCategoryList?: (newCategory: ICategory) => void; 
@@ -23,6 +24,11 @@ const columns: ColumnsType<DataType> = [
   {
     title: 'Name',
     dataIndex: 'name',
+  },
+  {
+    title: 'Image',
+    dataIndex: 'image',
+    render: (image: string) => <img src={`http://pv116.rozetka.com/upload/${image}`} alt="Category" style={{ maxWidth: '50px', maxHeight: '50px' }} />,
   }
 ];
 
@@ -31,6 +37,7 @@ const Category: React.FC<CategoryProps> = ({ categories }) => {
         key: category.id.toString(),
         id: category.id,
         name: category.name,
+        image: category.image,
       }));
 
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);

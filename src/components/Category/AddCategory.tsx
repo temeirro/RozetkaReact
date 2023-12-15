@@ -6,18 +6,22 @@ import { Input, Button, Row, Col } from 'antd';
 const AddCategory: React.FC = () => {
   const navigate = useNavigate();
   const [categoryName, setCategoryName] = useState("");
+  const [categoryImage, setCategoryImage] = useState("");
 
   const handleAddCategory = () => {
-    axios.post("http://pv116.rozetka.com/api/categories", {
-      name: categoryName
-    })
-      .then((response) => {
-        setCategoryName("");
-      })
-      .catch((error) => {
-        console.error("Error adding category:", error);
-      });
-    navigate('/');
+    const formData = new FormData();
+    formData.append("name", categoryName);
+    formData.append("image", categoryImage);
+
+    axios.post("http://pv116.rozetka.com/api/categories", formData)
+        .then((response) => {
+          setCategoryName("");
+          setCategoryImage("");
+          navigate('/');
+        })
+        .catch((error) => {
+          console.error("Error adding category:", error);
+        });
   };
 
   const handleCancel = () => {
@@ -34,6 +38,12 @@ const AddCategory: React.FC = () => {
           value={categoryName}
           onChange={(e) => setCategoryName(e.target.value)}
         />
+        <Input  style={{ marginTop: '10px' }}
+            type="file"
+            placeholder="Category image"
+            onChange={(e) => setCategoryImage(e.target.files[0])}
+        />
+
         <Row justify="space-between" style={{ marginTop: '16px' }}>
           <Button type="primary" onClick={handleAddCategory}>Add Category</Button>
           <Button onClick={handleCancel}>Cancel</Button>
